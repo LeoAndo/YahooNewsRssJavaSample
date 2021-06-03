@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.YahooNewsRssJavaSample">
-        <receiver android:name=".YahooNewsWidget">
+        <receiver android:name=".YahooNewsWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -18,6 +18,10 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/yahoo_news_widget_info" />
         </receiver>
+
+        <service
+            android:name=".MyRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>
