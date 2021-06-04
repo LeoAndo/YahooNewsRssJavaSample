@@ -108,17 +108,17 @@ public class YahooNewsWidgetProvider extends AppWidgetProvider {
     /**
      * 通常はこのメソッドを実装する必要はない。
      * <p>
-     * onEnabled()が呼ばれた後に、
-     * android.appwidget.action.APPWIDGET_ENABLED インテントが飛んでくる
+     * android.appwidget.action.APPWIDGET_ENABLED インテントが飛んできて、
+     * onEnabled()を内部で呼び出している
      * <p>
-     * onUpdate()が呼ばれた後に、
-     * android.appwidget.action.APPWIDGET_UPDATE インテントが飛んでくる
+     * android.appwidget.action.APPWIDGET_UPDATE インテントが飛んできて、
+     * onUpdate()を内部で呼び出している
      * <p>
-     * onDeleted()が呼ばれた後に、
-     * android.appwidget.action.APPWIDGET_DELETED インテントが飛んでくる
+     * android.appwidget.action.APPWIDGET_DELETED インテントが飛んできて、
+     * onDeleted()を内部で呼び出している
      * <p>
-     * onDisabled()が呼ばれた後に、
-     * android.appwidget.action.APPWIDGET_DISABLED インテントが飛んでくる
+     * android.appwidget.action.APPWIDGET_DISABLED インテントが飛んできて、
+     * onDisabled()を内部で呼び出している
      */
     @Override
     public void onReceive(Context context, Intent intent) {
