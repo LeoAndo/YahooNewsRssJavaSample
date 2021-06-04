@@ -7,6 +7,36 @@ YahooのIT記事(RSS feed)をホームウィジェットで閲覧するアプリ
 [OS8.0+のウィジェットのショートカット配置機能も搭載。](https://developer.android.com/guide/topics/appwidgets#Pinning)<br>
 リストセルタップで、外部ブラウザを起動し、本家の記事を見に行ける。<br>
 
+# Capture Pixel 4 OS:7
+
+| requestPinAppWidget | Home Widget |
+|:---|:---:|
+|<img src="https://user-images.githubusercontent.com/16476224/120823869-d4bd3980-c592-11eb-8dde-401192e8a8b1.png" width=320 /> |<img src="https://user-images.githubusercontent.com/16476224/120824484-7ba1d580-c593-11eb-8751-eec8a0bc90af.gif" width=320 /> |
+
+# Capture Pixel 4 OS:8
+
+| requestPinAppWidget | Home Widget |
+|:---|:---:|
+|<img src="https://user-images.githubusercontent.com/16476224/120824723-adb33780-c593-11eb-9a3b-33a06638c2a7.png" width=320 /> |<img src="https://user-images.githubusercontent.com/16476224/120825266-2c0fd980-c594-11eb-84fe-5364a177c951.gif" width=320 /> |
+
+# Capture Pixel 4 OS:9
+
+| requestPinAppWidget | Home Widget |
+|:---|:---:|
+|<img src="https://user-images.githubusercontent.com/16476224/120825508-6c6f5780-c594-11eb-8090-f38626e00d21.png" width=320 /> |<img src="https://user-images.githubusercontent.com/16476224/120825991-ec95bd00-c594-11eb-889b-6889963d49dd.gif" width=320 /> |
+
+# Capture Pixel 4 OS:10
+
+| requestPinAppWidget | Home Widget |
+|:---|:---:|
+|<img src="" width=320 /> |<img src="" width=320 /> |
+
+# Capture Pixel 4 OS:11
+
+| requestPinAppWidget | Home Widget |
+|:---|:---:|
+|<img src="" width=320 /> |<img src="" width=320 /> |
+
 # 使用ライブラリ
 - [RSS-Parser](https://github.com/prof18/RSS-Parser)
  - [ver3.1.4](https://github.com/prof18/RSS-Parser/releases/tag/3.1.4) 
