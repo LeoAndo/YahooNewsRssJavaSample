@@ -29,7 +29,7 @@ YahooのIT記事(RSS feed)をホームウィジェットで閲覧するアプリ
 
 | requestPinAppWidget | Home Widget |
 |:---|:---:|
-|<img src="" width=320 /> |<img src="" width=320 /> |
+|<img src="https://user-images.githubusercontent.com/16476224/120826686-aa20b000-c595-11eb-8fce-5729753ca7fb.png" width=320 /> |<img src="https://user-images.githubusercontent.com/16476224/120826947-e81dd400-c595-11eb-91e7-65db16800277.gif" width=320 /> |
 
 # Capture Pixel 4 OS:11
 
