@@ -5,7 +5,7 @@ RSS Reader Widget App Sample Project (Java)
 
 YahooのIT記事(RSS feed)をホームウィジェットで閲覧するアプリ。<br>
 [OS8.0+のウィジェットのショートカット配置機能も搭載。](https://developer.android.com/guide/topics/appwidgets#Pinning)<br>
-リストセルタップで、外部ブラウザを起動し、記事を見に行ける。<br>
+リストセルタップで、外部ブラウザを起動し、本家の記事を見に行ける。<br>
 
 # 使用ライブラリ
 - [RSS-Parser](https://github.com/prof18/RSS-Parser)
