@@ -7,10 +7,10 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.prof.rssparser.Article;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import static leo.yahoonewsrssjavasample.YahooNewsWidgetProvider.EXTRA_ITEM;
 
 public class MyRemoteViewsService extends RemoteViewsService {
     private static final String TAG = MyRemoteViewsService.class.getSimpleName();
@@ -26,12 +26,12 @@ public class MyRemoteViewsService extends RemoteViewsService {
         private final List<WidgetItem> widgetItems = new ArrayList<>();
         private final Context context;
         private final RemoteViews rvLoading;
+        private final SharedPreferencesUtils sharedPreferencesUtils = new SharedPreferencesUtils();
 
         public MyRemoteViewsFactory(Context context, Intent intent) {
             this.context = context;
-            final int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
             rvLoading = new RemoteViews(context.getPackageName(), R.layout.widget_loading);
-            Log.d(TAG, "MyRemoteViewsFactory appWidgetId: " + appWidgetId + " hashcode:" + hashCode());
+            Log.d(TAG, "MyRemoteViewsFactory: " + "hashcode:" + hashCode());
         }
 
         /**
@@ -39,17 +39,7 @@ public class MyRemoteViewsService extends RemoteViewsService {
          */
         @Override
         public void onCreate() {
-            Log.d(TAG, "onCreate " + " hashcode:" + hashCode());
-            for (int i = 0; i < 10; i++) {
-                widgetItems.add(new WidgetItem(i + "!"));
-            }
-
-            // ここで 3 秒間スリープして、その間に空のビューがどのように表示されるかのテスト.
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Log.d(TAG, "onCreate IN " + " hashcode:" + hashCode());
         }
 
         /**
@@ -59,6 +49,12 @@ public class MyRemoteViewsService extends RemoteViewsService {
         @Override
         public void onDataSetChanged() {
             Log.d(TAG, "onDataSetChanged " + " hashcode:" + hashCode());
+            List<Article> articles = sharedPreferencesUtils.getArticles(context);
+            Log.d(TAG, "articles: " + articles);
+            widgetItems.clear();
+            for (Article article : articles) {
+                widgetItems.add(new WidgetItem(article.getTitle(), article.getDescription(), article.getLink()));
+            }
         }
 
         @Override
@@ -78,19 +74,12 @@ public class MyRemoteViewsService extends RemoteViewsService {
         public RemoteViews getViewAt(int position) {
             Log.d(TAG, "getViewAt " + " hashcode:" + hashCode());
             RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_item);
-            rv.setTextViewText(R.id.widget_item, widgetItems.get(position).text);
+            rv.setTextViewText(R.id.text_title, widgetItems.get(position).title);
+            rv.setTextViewText(R.id.text_description, widgetItems.get(position).description);
 
-            Intent fillInIntent = new Intent();
-            fillInIntent.putExtra(EXTRA_ITEM, position);
-            rv.setOnClickFillInIntent(R.id.widget_item, fillInIntent);
-
-            try {
-                Log.d(TAG, "Loading view" + position);
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+            Intent fillInIntent = new Intent(YahooNewsWidgetProvider.ACTION_ITEM_CLICKED);
+            fillInIntent.putExtra(YahooNewsWidgetProvider.EXTRA_ITEM_LINK, widgetItems.get(position).link);
+            rv.setOnClickFillInIntent(R.id.text_description, fillInIntent); // rootのview IDを指定できない！ (@+id/item_container)
             return rv;
         }
 
@@ -103,6 +92,9 @@ public class MyRemoteViewsService extends RemoteViewsService {
             return rvLoading;
         }
 
+        /**
+         * すべてのリストアイテムに対して常に同じタイプのビューを返すのでその場合、 1 を返すでOK!
+         */
         @Override
         public int getViewTypeCount() {
             return 1;
