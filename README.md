@@ -35,7 +35,7 @@ YahooのIT記事(RSS feed)をホームウィジェットで閲覧するアプリ
 
 | requestPinAppWidget | Home Widget |
 |:---|:---:|
-|<img src="" width=320 /> |<img src="" width=320 /> |
+|<img src="https://user-images.githubusercontent.com/16476224/120827208-2c10d900-c596-11eb-9680-10f2b989eaac.png" width=320 /> |<img src="https://user-images.githubusercontent.com/16476224/120827789-c3762c00-c596-11eb-9578-b50a124f0961.gif" width=320 /> |
 
 # 使用ライブラリ
 - [RSS-Parser](https://github.com/prof18/RSS-Parser)
