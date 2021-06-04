@@ -1,7 +1,9 @@
 package leo.yahoonewsrssjavasample;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,26 +11,40 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.prof.rssparser.Article;
+
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class YahooNewsWidgetProvider extends AppWidgetProvider {
     private static final String TAG = YahooNewsWidgetProvider.class.getSimpleName();
-    public static final String EXTRA_ITEM = BuildConfig.APPLICATION_ID + "EXTRA_ITEM";
+    public static final String EXTRA_ITEM_LINK = BuildConfig.APPLICATION_ID + "EXTRA_ITEM_LINK";
+    public static final String ACTION_ITEM_CLICKED = BuildConfig.APPLICATION_ID + "ACTION_ITEM_CLICKED";
+    public static final String ACTION_REFRESH_MANUAL = BuildConfig.APPLICATION_ID + "ACTION_REFRESH_MANUAL";
+    private final RssFeedHandler rssFeedHandler = new RssFeedHandler();
+    private final SharedPreferencesUtils sharedPreferencesUtils = new SharedPreferencesUtils();
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-        Log.d(TAG, "updateAppWidget appWidgetId: " + appWidgetId);
+    private RemoteViews getRemoteViews(Context context, int appWidgetId) {
+        Log.d(TAG, "getWidgetRemoteViews appWidgetId: " + appWidgetId);
         Intent intent = new Intent(context, MyRemoteViewsService.class);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.yahoo_news_widget_provider);
         remoteViews.setRemoteAdapter(R.id.view_flipper, intent);
-
         remoteViews.setEmptyView(R.id.view_flipper, R.id.empty_view); // コレクションにアイテムがない場合、空のビューを表示させる
+        // ボタンのクリックイベントをハンドリングする.
+        Intent refreshManualIntent = new Intent(context, YahooNewsWidgetProvider.class);
+        refreshManualIntent.setAction(ACTION_REFRESH_MANUAL);
+        refreshManualIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        remoteViews.setOnClickPendingIntent(R.id.button_refresh_manual, PendingIntent.getBroadcast(context, appWidgetId, refreshManualIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
-        appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+        // セルのクリックイベントをハンドリングする場合は、setPendingIntentTemplateとsetOnClickFillInIntentの組み合わせで
+        // PendingIntentを作成する.
+        Intent cellItemIntent = new Intent(context, YahooNewsWidgetProvider.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, appWidgetId, cellItemIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        remoteViews.setPendingIntentTemplate(R.id.view_flipper, pendingIntent);
+        return remoteViews;
     }
 
     /**
@@ -41,9 +57,8 @@ public class YahooNewsWidgetProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Log.d(TAG, "onUpdate appWidgetIds: " + Arrays.toString(appWidgetIds) + " hashcode:" + hashCode());
         // There may be multiple widgets active, so update all of them
-        for (int i = 0; i < appWidgetIds.length; ++i) {
-            Log.d(TAG, "i: " + i);
-            updateAppWidget(context, appWidgetManager, appWidgetIds[i]);
+        for (int appWidgetId : appWidgetIds) {
+            updateAppWidget(context, appWidgetId);
         }
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
@@ -57,6 +72,7 @@ public class YahooNewsWidgetProvider extends AppWidgetProvider {
     public void onEnabled(Context context) {
         Log.d(TAG, "onEnabled" + " hashcode:" + hashCode());
         // Enter relevant functionality for when the first widget is created
+        Log.d(TAG, "onEnabled END");
     }
 
     /**
@@ -65,8 +81,9 @@ public class YahooNewsWidgetProvider extends AppWidgetProvider {
      */
     @Override
     public void onDisabled(Context context) {
-        Log.d(TAG, "onDisabled"+ " hashcode:" + hashCode());
+        Log.d(TAG, "onDisabled" + " hashcode:" + hashCode());
         // Enter relevant functionality for when the last widget is disabled
+        sharedPreferencesUtils.clearArticles(context);
     }
 
     /**
@@ -75,7 +92,7 @@ public class YahooNewsWidgetProvider extends AppWidgetProvider {
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
-        Log.d(TAG, "onDeleted appWidgetIds: " + Arrays.toString(appWidgetIds)+ " hashcode:" + hashCode());
+        Log.d(TAG, "onDeleted appWidgetIds: " + Arrays.toString(appWidgetIds) + " hashcode:" + hashCode());
     }
 
     /**
@@ -85,7 +102,7 @@ public class YahooNewsWidgetProvider extends AppWidgetProvider {
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
-        Log.d(TAG, "onAppWidgetOptionsChanged appWidgetId: " + appWidgetId + " newOptions: " + newOptions+ " hashcode:" + hashCode());
+        Log.d(TAG, "onAppWidgetOptionsChanged appWidgetId: " + appWidgetId + " newOptions: " + newOptions + " hashcode:" + hashCode());
     }
 
     /**
@@ -105,7 +122,43 @@ public class YahooNewsWidgetProvider extends AppWidgetProvider {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "onReceive intent: " + intent + " hashcode:" + hashCode());
         super.onReceive(context, intent);
-        Log.d(TAG, "onReceive intent: " + intent+ " hashcode:" + hashCode());
+
+        final String action = intent.getAction();
+        if (ACTION_ITEM_CLICKED.equals(action)) {
+            final String link = intent.getStringExtra(EXTRA_ITEM_LINK);
+            final Intent newIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+            newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                context.startActivity(newIntent);
+            } catch (ActivityNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        } else if (ACTION_REFRESH_MANUAL.equals(action)) {
+            final int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            updateAppWidget(context, appWidgetId);
+        }
+    }
+
+    public void updateAppWidget(Context context, int appWidgetId) {
+        AppWidgetManager.getInstance(context).updateAppWidget(appWidgetId, getRemoteViews(context, appWidgetId));
+        fetchFeed(context, appWidgetId);
+    }
+
+    private void fetchFeed(Context context, int appWidgetId) {
+        rssFeedHandler.fetchFeed(new OnFetchFeedCompletedListener() {
+            @Override
+            public void onTaskCompleted(List<Article> articles) {
+                sharedPreferencesUtils.clearArticles(context);
+                sharedPreferencesUtils.setArticles(context, articles);
+                AppWidgetManager.getInstance(context).notifyAppWidgetViewDataChanged(appWidgetId, R.id.view_flipper);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

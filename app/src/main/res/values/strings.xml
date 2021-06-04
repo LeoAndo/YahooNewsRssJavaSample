@@ -4,4 +4,10 @@
     <string name="add_widget">Add widget</string>
     <string name="empty_view_text">This is the empty view</string>
     <string name="loading_text">now loading....</string>
+    <string name="manual_update">Manual Update</string>
+    <string name="error_widget_pinning_not_supported_by_launcher">error widget pinning not supported by launcher</string>
+    <string name="dummy_text_title">Twitterサブスク 豪などで始動</string>
+    <string name="dummy_text_description">米Twitterは6月3日（現地時間）、同社としては初のサブスクリプションサービス「Twitter Blue」の提供を開始したと発表した。まずはオーストラリアとカナダでロールアウトし、ユーザー体験の理解を深めるとしている。</string>
+    <string name="created_widget_message">created app widget!! appwidgetId: %d</string>
+    <string name="toast_message_andorid_o_above">Widget pin feature available on Android 8.0 and above.\n Please Add widget from home screen.</string>
 </resources>
