@@ -4,8 +4,8 @@ RSS Reader Widget App Sample Project (Java)
 # アプリ概要
 
 YahooのIT記事(RSS feed)をホームウィジェットで閲覧するアプリ。<br>
-[OS8.0+ ウィジェットのショートカット配置機能も搭載](https://developer.android.com/guide/topics/appwidgets#Pinning)<br>
-リストセルタップで、外部ブラウザを起動し、本家の記事を見に行ける。<br>
+[OS8.0新機能のウィジェットショートカット配置機能も搭載](https://developer.android.com/guide/topics/appwidgets#Pinning)<br>
+リストセルタップで、外部ブラウザを起動し、本家の記事を見にいける。<br>
 
 # Capture Pixel 4 OS:7
 
@@ -49,7 +49,7 @@ YahooのIT記事(RSS feed)をホームウィジェットで閲覧するアプリ
 ## 最終的に参考になったコードと記事は以下
 [アプリ ウィジェットを作成する](https://developer.android.com/guide/topics/appwidgets?hl=ja)<br>
 [PlayStoreで公開されてるRSSWidgetアプリのコードを解析](https://github.com/LeoAndo/YahooNewsRssJavaSample/issues/4)<br>
-[OS8.0+のウィジェットのショートカット配置機能](https://github.com/sigute/WidgetsDemo)<br>
+[WidgetsDemo](https://github.com/sigute/WidgetsDemo)<br>
 
 
 ## 日本の記事で参考になるのは以下<br>
