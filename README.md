@@ -67,5 +67,5 @@ https://cs.android.com/android/platform/superproject/+/master:development/sample
 `WeatherListWidget`のサンプルだと、`ContentProvider`を使って、リストデータを扱っていて実装量が多い。<br>
 
 ## For Kotlin
-近日対応予定。。
+https://github.com/LeoAndo/YahooNewsRssKotlinSample
 
