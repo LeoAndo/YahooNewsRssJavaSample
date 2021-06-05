@@ -10,7 +10,7 @@ import com.prof.rssparser.Article;
 import java.util.Collections;
 import java.util.List;
 
-public class SharedPreferencesUtils {
+class SharedPreferencesUtils {
     public static final String ARTICLES_PREF_KEY = "ARTICLES_PREF_KEY";
     private static final String LIST_PREFS_DEF_VALUE = "[]";
 

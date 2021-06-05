@@ -1,6 +1,6 @@
 package leo.yahoonewsrssjavasample;
 
-public class WidgetItem {
+class WidgetItem {
     public String title;
     public String description;
     public String link;

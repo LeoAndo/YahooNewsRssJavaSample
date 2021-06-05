@@ -1,6 +1,5 @@
 package leo.yahoonewsrssjavasample;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -17,21 +16,23 @@ public class MyRemoteViewsService extends RemoteViewsService {
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        Log.d(TAG, "onGetViewFactory intent: " + intent + " hashcode:" + hashCode());
-        return new MyRemoteViewsFactory(getApplicationContext(), intent);
+        Log.d(TAG, "onGetViewFactory intent: " + intent);
+        return new MyRemoteViewsFactory(getApplicationContext());
     }
 
     private static class MyRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         private final String TAG = MyRemoteViewsFactory.class.getSimpleName();
-        private final List<WidgetItem> widgetItems = new ArrayList<>();
+        private final List<WidgetItem> widgetItems;
         private final Context context;
         private final RemoteViews rvLoading;
-        private final SharedPreferencesUtils sharedPreferencesUtils = new SharedPreferencesUtils();
+        private final SharedPreferencesUtils sharedPreferencesUtils;
 
-        public MyRemoteViewsFactory(Context context, Intent intent) {
+        public MyRemoteViewsFactory(Context context) {
+            Log.d(TAG, "MyRemoteViewsFactory");
             this.context = context;
             rvLoading = new RemoteViews(context.getPackageName(), R.layout.widget_loading);
-            Log.d(TAG, "MyRemoteViewsFactory: " + "hashcode:" + hashCode());
+            sharedPreferencesUtils = new SharedPreferencesUtils();
+            widgetItems = new ArrayList<>();
         }
 
         /**
@@ -39,7 +40,7 @@ public class MyRemoteViewsService extends RemoteViewsService {
          */
         @Override
         public void onCreate() {
-            Log.d(TAG, "onCreate IN " + " hashcode:" + hashCode());
+            Log.d(TAG, "onCreate");
         }
 
         /**
@@ -48,7 +49,7 @@ public class MyRemoteViewsService extends RemoteViewsService {
          */
         @Override
         public void onDataSetChanged() {
-            Log.d(TAG, "onDataSetChanged " + " hashcode:" + hashCode());
+            Log.d(TAG, "onDataSetChanged");
             List<Article> articles = sharedPreferencesUtils.getArticles(context);
             Log.d(TAG, "articles: " + articles);
             widgetItems.clear();
@@ -59,7 +60,7 @@ public class MyRemoteViewsService extends RemoteViewsService {
 
         @Override
         public void onDestroy() {
-            Log.d(TAG, "onDestroy " + " hashcode:" + hashCode());
+            Log.d(TAG, "onDestroy");
             widgetItems.clear();
         }
 
@@ -72,7 +73,7 @@ public class MyRemoteViewsService extends RemoteViewsService {
 
         @Override
         public RemoteViews getViewAt(int position) {
-            Log.d(TAG, "getViewAt " + " hashcode:" + hashCode());
+            Log.d(TAG, "getViewAt");
             RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_item);
             rv.setTextViewText(R.id.text_title, widgetItems.get(position).title);
             rv.setTextViewText(R.id.text_description, widgetItems.get(position).description);

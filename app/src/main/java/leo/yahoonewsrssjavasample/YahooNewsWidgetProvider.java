@@ -23,7 +23,7 @@ public class YahooNewsWidgetProvider extends AppWidgetProvider {
     private static final String TAG = YahooNewsWidgetProvider.class.getSimpleName();
     public static final String EXTRA_ITEM_LINK = BuildConfig.APPLICATION_ID + "EXTRA_ITEM_LINK";
     public static final String ACTION_ITEM_CLICKED = BuildConfig.APPLICATION_ID + "ACTION_ITEM_CLICKED";
-    public static final String ACTION_REFRESH_MANUAL = BuildConfig.APPLICATION_ID + "ACTION_REFRESH_MANUAL";
+    private static final String ACTION_REFRESH_MANUAL = BuildConfig.APPLICATION_ID + "ACTION_REFRESH_MANUAL";
     private final RssFeedHandler rssFeedHandler = new RssFeedHandler();
     private final SharedPreferencesUtils sharedPreferencesUtils = new SharedPreferencesUtils();
 
@@ -55,7 +55,7 @@ public class YahooNewsWidgetProvider extends AppWidgetProvider {
      */
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        Log.d(TAG, "onUpdate appWidgetIds: " + Arrays.toString(appWidgetIds) + " hashcode:" + hashCode());
+        Log.d(TAG, "onUpdate appWidgetIds: " + Arrays.toString(appWidgetIds));
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetId);
@@ -70,9 +70,8 @@ public class YahooNewsWidgetProvider extends AppWidgetProvider {
      */
     @Override
     public void onEnabled(Context context) {
-        Log.d(TAG, "onEnabled" + " hashcode:" + hashCode());
+        Log.d(TAG, "onEnabled");
         // Enter relevant functionality for when the first widget is created
-        Log.d(TAG, "onEnabled END");
     }
 
     /**
@@ -81,7 +80,7 @@ public class YahooNewsWidgetProvider extends AppWidgetProvider {
      */
     @Override
     public void onDisabled(Context context) {
-        Log.d(TAG, "onDisabled" + " hashcode:" + hashCode());
+        Log.d(TAG, "onDisabled");
         // Enter relevant functionality for when the last widget is disabled
         sharedPreferencesUtils.clearArticles(context);
     }
@@ -92,7 +91,7 @@ public class YahooNewsWidgetProvider extends AppWidgetProvider {
     @Override
     public void onDeleted(Context context, int[] appWidgetIds) {
         super.onDeleted(context, appWidgetIds);
-        Log.d(TAG, "onDeleted appWidgetIds: " + Arrays.toString(appWidgetIds) + " hashcode:" + hashCode());
+        Log.d(TAG, "onDeleted appWidgetIds: " + Arrays.toString(appWidgetIds));
     }
 
     /**
@@ -102,7 +101,7 @@ public class YahooNewsWidgetProvider extends AppWidgetProvider {
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
-        Log.d(TAG, "onAppWidgetOptionsChanged appWidgetId: " + appWidgetId + " newOptions: " + newOptions + " hashcode:" + hashCode());
+        Log.d(TAG, "onAppWidgetOptionsChanged appWidgetId: " + appWidgetId + " newOptions: " + newOptions);
     }
 
     /**
@@ -122,7 +121,7 @@ public class YahooNewsWidgetProvider extends AppWidgetProvider {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG, "onReceive intent: " + intent + " hashcode:" + hashCode());
+        Log.d(TAG, "onReceive intent: " + intent);
         super.onReceive(context, intent);
 
         final String action = intent.getAction();
@@ -147,10 +146,11 @@ public class YahooNewsWidgetProvider extends AppWidgetProvider {
     }
 
     private void fetchFeed(Context context, int appWidgetId) {
+        Log.d(TAG, "fetchFeed appWidgetId: " + appWidgetId);
         rssFeedHandler.fetchFeed(new OnFetchFeedCompletedListener() {
             @Override
             public void onTaskCompleted(List<Article> articles) {
-                sharedPreferencesUtils.clearArticles(context);
+                Log.d(TAG, "onTaskCompleted articles: " + articles);
                 sharedPreferencesUtils.setArticles(context, articles);
                 AppWidgetManager.getInstance(context).notifyAppWidgetViewDataChanged(appWidgetId, R.id.view_flipper);
             }

@@ -10,7 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class WidgetPinnedReceiver extends BroadcastReceiver {
-    public static final int BROADCAST_ID = 12345;
+    private static final int BROADCAST_ID = 12345;
     private static final String TAG = WidgetPinnedReceiver.class.getSimpleName();
 
     @Override
