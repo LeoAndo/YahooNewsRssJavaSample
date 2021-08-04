@@ -51,11 +51,6 @@ YahooのIT記事(RSS feed)をホームウィジェットで閲覧するアプリ
 [PlayStoreで公開されてるRSSWidgetアプリのコードを解析](https://github.com/LeoAndo/YahooNewsRssJavaSample/issues/4)<br>
 [WidgetsDemo](https://github.com/sigute/WidgetsDemo)<br>
 
-
-## 日本の記事で参考になるのは以下<br>
-https://speakerdeck.com/ymnder/widgetkai-fa-zai-fang?slide=1<br>
-https://github.com/ymnder/WidgetSample<br>
-
 ## PR
 https://github.com/LeoAndo/YahooNewsRssJavaSample/pulls?q=is%3Apr+is%3Aclosed
 
