@@ -1,5 +1,5 @@
 # YahooNewsRssJavaSample
-RSS Reader Widget App Sample Project (Java)
+RSS Reader Widget App Sample Project (Java).
 
 # アプリ概要
 
