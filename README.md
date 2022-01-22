@@ -7,6 +7,12 @@ YahooのIT記事(RSS feed)をホームウィジェットで閲覧するアプリ
 [OS8.0新機能のウィジェットショートカット配置機能も搭載](https://developer.android.com/guide/topics/appwidgets#Pinning)<br>
 リストセルタップで、外部ブラウザを起動し、本家の記事を見にいける。<br>
 
+# MAD Score
+
+![summary](https://user-images.githubusercontent.com/16476224/150647778-3c916979-7a4d-453e-bbea-e460b7f67208.png)
+![jetpack](https://user-images.githubusercontent.com/16476224/150647774-c1c1325c-e644-4661-9761-5e3ef12e2228.png)
+![studio](https://user-images.githubusercontent.com/16476224/150647777-e577a39e-e8c6-47fe-a88e-25961318985f.png)
+
 # Capture Pixel 4 OS:7
 
 | requestPinAppWidget | Home Widget |
